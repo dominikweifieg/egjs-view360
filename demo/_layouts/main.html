@@ -7,9 +7,9 @@
             <a href="{{site.data.egjs.home}}">
                 <img class="home" src="./common/img/type_black.svg"/>
             </a><!--//logo-->
-            <a class="github" href="//github.com/{{ site.data.egjs.github.user }}/{{ site.data.egjs.github.repo }}">Github</a>
+            <a class="github" href="{{ site.data.egjs.github.user }}/{{ site.data.egjs.github.repo }}">Github</a>
         </div>
-<header>
+<header>                    
     <h1>
         {{ site.data.egjs.component | downcase }}
 
@@ -24,12 +24,12 @@
 {% for subComponents in site.data.egjs.subComponents %}
 <article>
         <div class="container">
-            <a class="thumb-link" href="./{{ subComponents.name | downcase }}.html" title="{{ subComponents.name }}">
-                <div class="cover-image" style="background-image: url({{ subComponents.ogimage }})"></div>
+            <a class="thumb-link" href="./{{ subComponents.name | downcase }}/" title="{{ subComponents.name }}">
+                <div class="cover-image" style="background-image: url(./assets/img/{{ subComponents.name }}.png)"></div>
             </a>
 
             <div class="content">    
-            <a class="h-link title" href="./{{ subComponents.name | downcase }}.html">
+            <a class="h-link title" href="./{{ subComponents.name | downcase }}/">
                 <h3>{{ subComponents.name }}</h3>
             </a>
             <div class="download-links">
@@ -48,7 +48,7 @@
                     {% endfor %}
                 </span>
             </p>                 
-            <a class="h-link ref-link" href="./{{ subComponents.name | downcase }}.html" class="button example">Read the Tutorial</a></br>
+            <a class="h-link ref-link" href="./{{ subComponents.name | downcase }}" class="button example">Read the Tutorial</a></br>
         </div></div>  
     </article>
 {% endfor %}

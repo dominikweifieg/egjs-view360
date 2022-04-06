@@ -3,6 +3,7 @@ import { SpinViewerOptions, SpinViewerEvent } from "./SpinViewer";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const SPINVIEWER_OPTIONS: { [key in keyof SpinViewerOptions]: true } = {
   imageUrl: true,
+  imageUrls: true,
   rowCount: true,
   colCount: true,
   width: true,

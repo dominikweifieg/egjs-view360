@@ -56,6 +56,14 @@ export interface SpriteImageEvent {
  * SpriteImage
  */
 class SpriteImage extends Component<SpriteImageEvent> {
+  protected static getSizeString(size) {
+    if (typeof size === "number") {
+      return `${size}px`;
+    }
+
+    return size;
+  }
+
   private static _createBgDiv(wrapperInContainer: HTMLDivElement | null, img: HTMLImageElement, rowCount: number, colCount: number, autoHeight: boolean) {
     const el = wrapperInContainer || document.createElement("div");
 
@@ -89,28 +97,21 @@ class SpriteImage extends Component<SpriteImageEvent> {
     return el;
   }
 
-  private static _getSizeString(size) {
-    if (typeof size === "number") {
-      return `${size}px`;
-    }
-
-    return size;
-  }
-
   public static VERSION = VERSION;
 
-  private _el: HTMLElement;
-  private _rowCount: number;
-  private _colCount: number;
-  private _totalCount: number;
-  private _width: number | string;
-  private _height: number | string;
-  private _autoHeight: boolean;
-  private _colRow: number[];
-  private _image: HTMLImageElement;
-  private _bg: HTMLDivElement;
-  private _autoPlayReservedInfo: { interval: number; playCount: number } | null;
-  private _autoPlayTimer: number;
+  protected _el: HTMLElement;
+  protected _rowCount: number;
+  protected _colCount: number;
+  protected _totalCount: number;
+  protected _width: number | string;
+  protected _height: number | string;
+  protected _autoHeight: boolean;
+  protected _colRow: number[];
+  protected _image: HTMLImageElement;
+  protected _positioningElement: HTMLElement;
+  protected _bg: HTMLDivElement;
+  protected _autoPlayReservedInfo: { interval: number; playCount: number } | null;
+  protected _autoPlayTimer: number;
 
   /**
    * @class eg.view360.SpriteImage
@@ -160,8 +161,8 @@ class SpriteImage extends Component<SpriteImageEvent> {
       this.setFrameIndex(opt.frameIndex);
     }
 
-    this._el.style.width = SpriteImage._getSizeString(this._width);
-    this._el.style.height = SpriteImage._getSizeString(this._height);
+    this._el.style.width = SpriteImage.getSizeString(this._width);
+    this._el.style.height = SpriteImage.getSizeString(this._height);
 
     const wrapperClass = opt.wrapperClass || DEFAULT_WRAPPER_CLASS;
     const imageClass = opt.imageClass || DEFAULT_IMAGE_CLASS;
@@ -184,6 +185,8 @@ class SpriteImage extends Component<SpriteImageEvent> {
     }
 
     this._image = imageInContainer || new Image();
+
+    this._positioningElement = this._image;
     /**
      * Event
      */
@@ -272,9 +275,9 @@ class SpriteImage extends Component<SpriteImageEvent> {
       return;
     }
 
-    if (this._image && TRANSFORM) {
+    if (this._positioningElement && TRANSFORM) {
       // NOTE: Currently, do not apply translate3D for using layer hack. Do we need layer hack for old browser?
-      this._image.style[TRANSFORM] = `translate(${-(col / this._colCount * 100)}%, ${-(row / this._rowCount * 100)}%)`;
+      this._positioningElement.style[TRANSFORM] = `translate(${-(col / this._colCount * 100)}%, ${-(row / this._rowCount * 100)}%)`;
     }
 
     this._colRow = [col, row];

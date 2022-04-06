@@ -5,6 +5,7 @@ import { VERSION } from "../version";
 import { AnimationEndEvent, ChangeEvent, ImageErrorEvent, LoadEvent } from "../types/event";
 
 import SpriteImage from "./SpriteImage";
+import MultiImage from "./MultiImage";
 
 const DEFAULT_PAN_SCALE = 0.21;
 
@@ -17,6 +18,7 @@ export interface SpinViewerEvent {
 
 export interface SpinViewerOptions {
   imageUrl: string;
+  imageUrls: string[];
   rowCount: number;
   colCount: number;
   width: number | string;
@@ -97,16 +99,30 @@ class SpinViewer extends Component<SpinViewerEvent> {
     this._frameCount = colCount * rowCount;
 
     // Init SpriteImage
-    this._sprites = new SpriteImage(element, opt).on({
-      "load": evt => {
-        this.trigger(new ComponentEvent("load", evt));
-      },
-      "imageError": evt => {
-        this.trigger(new ComponentEvent("imageError", {
-          imageUrl: evt.imageUrl
-        }));
-      }
-    });
+    if (opt.imageUrls) {
+      this._sprites = new MultiImage(element, opt).on({
+        "load": evt => {
+          this.trigger(new ComponentEvent("load", evt));
+        },
+        "imageError": evt => {
+          this.trigger(new ComponentEvent("imageError", {
+            imageUrl: evt.imageUrl
+          }));
+        }
+      });
+    } else {
+      this._sprites = new SpriteImage(element, opt).on({
+        "load": evt => {
+          this.trigger(new ComponentEvent("load", evt));
+        },
+        "imageError": evt => {
+          this.trigger(new ComponentEvent("imageError", {
+            imageUrl: evt.imageUrl
+          }));
+        }
+      });
+    }
+
 
     // Init Axes
     this._panInput = new PanInput(this._el, {

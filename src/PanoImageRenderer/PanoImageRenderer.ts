@@ -589,8 +589,13 @@ class PanoImageRenderer extends Component<{
     }));
   }
 
-  private _onContentLoad(e: OnReady) {
-    if (e.errorCount > 0) return;
+  private _onContentLoad(e: ComponentEvent) {
+    if (e.eventType === "ready") {
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if (e.errorCount > 0) return;
+    }
 
     this._imageIsReady = true;
 
