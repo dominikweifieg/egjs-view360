@@ -23,13 +23,13 @@ class MultiImage extends SpriteImage {
     pe.style.gridTemplateColumns = `repeat(${imgs.length})`;
 
     /** Prevent image from being dragged on IE10, IE11, Safari especially */
-    pe.ondragstart = () => (false); // img.style.pointerEvents = "none";
+    pe.ondragstart = () => false; // img.style.pointerEvents = "none";
     // Use hardware accelerator if available
     if (SUPPORT_WILLCHANGE) {
       (pe.style.willChange = "transform");
     }
 
-    imgs.forEach((image, index) => {
+    imgs.forEach((image, _index) => {
       // image.style.position = "realtive";
       // // if (typeof height === "string") {
       // //   image.style.top = MultiImage.getSizeString(index * parseInt(height, 10));
@@ -108,12 +108,12 @@ class MultiImage extends SpriteImage {
 
     const images = this._images;
 
+    let onLoadTriggered = false;
 
     for (let i = 0; i < opt.imageUrls.length; i++) {
       // opt.imageUrls.forEach((url, index) => {
       const url = opt.imageUrls[i];
-      const index = i;
-      const image = images[index];
+      const image = images[i];
       image.onload = () => {
         let allLoaded = true;
         images.forEach(img => {
@@ -122,7 +122,8 @@ class MultiImage extends SpriteImage {
           }
         });
 
-        if (allLoaded) {
+        if (allLoaded && !onLoadTriggered) {
+          onLoadTriggered = true;
           const result = MultiImage._createMultiBgDiv(
             images,
             this._rowCount,
